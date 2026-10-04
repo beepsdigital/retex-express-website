@@ -11,6 +11,9 @@ const { render } = require('./src/templates/pages.js');
 const { langPath, absUrl, stripTags } = require('./src/templates/util.js');
 const { validateContent } = require('./src/templates/validate.js');
 
+// When siteUrl has a path (e.g. a GitHub Pages project site), every root-relative URL gets this prefix.
+const BASE = new URL(cfg.siteUrl).pathname.replace(/\/+$/, '');
+
 const ROOT = __dirname;
 const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
@@ -116,6 +119,10 @@ function main() {
       let html = layout(ctx, { slug: page.slug, meta: out.meta, body: out.body, schema: out.schema, preload: out.preload || [], bodyClass: out.bodyClass || `page-${page.type}` });
       // Copy may cross-link with "@@/path/" tokens; resolve them to the language's base path.
       html = html.replace(/@@\//g, langPath(cfg, lang, ''));
+      if (BASE) {
+        html = html.replace(/\s(href|src|action)="\/(?!\/)/g, (m, attr) => ` ${attr}="${BASE}/`);
+        html = html.replace(/\ssrcset="([^"]*)"/g, (m, v) => ` srcset="${v.replace(/(^|,\s*)\/(?!\/)/g, `$1${BASE}/`)}"`);
+      }
       if (/\bundefined\b|\[object Object\]/.test(html)) throw new Error(`Template leak ("undefined" or "[object Object]") in ${lang}/${page.slug || 'home'}`);
       const rel = page.file ? path.join(lang === cfg.defaultLang ? '' : lang, page.file) : path.join(langPath(cfg, lang, page.slug), 'index.html');
       writeFile(rel, html);
@@ -141,8 +148,24 @@ function main() {
   writeFile('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${cfg.siteUrl}/sitemap.xml\n`);
 
   // GitHub Pages custom domain (harmless on other hosts); .nojekyll keeps Pages from running Jekyll.
-  writeFile('CNAME', `${new URL(cfg.siteUrl).host}\n`);
+  const host = new URL(cfg.siteUrl).host;
+  if (!host.endsWith('github.io')) writeFile('CNAME', `${host}\n`);
   writeFile('.nojekyll', '');
+
+  // Web app manifest (generated so icon paths respect the base path).
+  writeFile('manifest.webmanifest', JSON.stringify({
+    name: cfg.brand.name,
+    short_name: 'RetEx',
+    description: 'Courier, cargo and logistics from Riyadh to the GCC and worldwide.',
+    start_url: `${BASE}/`,
+    display: 'browser',
+    background_color: '#ffffff',
+    theme_color: '#2A1BE8',
+    icons: [
+      { src: `${BASE}/assets/img/icon-192.png`, sizes: '192x192', type: 'image/png' },
+      { src: `${BASE}/assets/img/icon-512.png`, sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+    ],
+  }, null, 2) + '\n');
 
   // llms.txt – plain-language summary for AI crawlers
   const en = contents.en;

@@ -47,15 +47,15 @@ Links inside copy use `@@/path/` (for example `<a href="@@/services/air-cargo/">
 
 Repository: https://github.com/beepsdigital/retex-express-website (public, because GitHub Pages on a private repository needs a paid plan).
 
-Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site, runs the tests and publishes `dist/` to GitHub Pages. The build writes a `CNAME` file from `siteUrl`, and the custom domain is also configured in the repository's Pages settings.
+Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site, runs the tests and publishes `dist/` to GitHub Pages.
 
-Current demo domain: **logistics-demo.beepsdigital.com**. For it to resolve, add this DNS record at the provider that hosts beepsdigital.com:
+**Live demo now:** https://beepsdigital.github.io/retex-express-website/ (a project site under a sub-path; `siteUrl` carries that path and the build prefixes every link with it).
 
-| Type | Name | Value |
-|---|---|---|
-| CNAME | `logistics-demo` | `beepsdigital.github.io` |
+**To move the demo to logistics-demo.beepsdigital.com:**
 
-Then in the repository go to Settings → Pages, confirm the custom domain shows as verified, and tick "Enforce HTTPS" once the certificate has been issued (usually within an hour of the DNS change). If beepsdigital.com is on Cloudflare, keep the record DNS-only (grey cloud) until HTTPS is enforced.
+1. In Cloudflare (DNS for beepsdigital.com) add a record: type `CNAME`, name `logistics-demo`, target `beepsdigital.github.io`, proxy status **DNS only** (grey cloud).
+2. Set `siteUrl` to `https://logistics-demo.beepsdigital.com` and push (the build then writes the `CNAME` file and drops the path prefix).
+3. In the repository's Settings → Pages set the custom domain to `logistics-demo.beepsdigital.com`, wait for the check to pass and tick "Enforce HTTPS" once the certificate is issued (usually within an hour).
 
 ## Before launch
 

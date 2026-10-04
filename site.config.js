@@ -2,7 +2,9 @@
 // Values come from the Google Business Profile (see docs/research/gbp-analysis.md)
 // and the client's flyer. Change siteUrl once the domain is live, then rebuild.
 module.exports = {
-  siteUrl: 'https://logistics-demo.beepsdigital.com', // demo domain; switch to the client's domain at launch
+  // Public URL of the site. A path is allowed (GitHub Pages project site); the build prefixes every link with it.
+  // Demo domain once its DNS exists: 'https://logistics-demo.beepsdigital.com'. Client launch: the client's own domain.
+  siteUrl: 'https://beepsdigital.github.io/retex-express-website',
   defaultLang: 'en',
   langs: ['en', 'ar'],
 

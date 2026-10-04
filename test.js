@@ -6,6 +6,7 @@ const path = require('path');
 const cfg = require('./site.config.js');
 
 const DIST = path.join(__dirname, 'dist');
+const BASE = new URL(cfg.siteUrl).pathname.replace(/\/+$/, ''); // '' or e.g. '/repo-name'
 const failures = [];
 const fail = (file, msg) => failures.push(`${file}: ${msg}`);
 
@@ -103,7 +104,8 @@ const relOf = (f) => path.relative(DIST, f).split(path.sep).join('/');
 
 // Map a site-root URL path to a file in dist/.
 function resolveLocal(urlPath) {
-  const clean = urlPath.split('#')[0].split('?')[0];
+  let clean = urlPath.split('#')[0].split('?')[0];
+  if (BASE && (clean === BASE || clean.startsWith(`${BASE}/`))) clean = clean.slice(BASE.length) || '/';
   if (!clean.startsWith('/')) return null;
   const p = path.join(DIST, clean);
   if (clean.endsWith('/')) return fs.existsSync(path.join(p, 'index.html'));
@@ -179,7 +181,7 @@ for (const file of htmlFiles) {
   }
 
   // aria-current="page" only on the link to this very page
-  const pagePath = `${lang === 'en' ? '/' : '/ar/'}${slug === '404.html' ? '' : slug}`;
+  const pagePath = `${BASE}${lang === 'en' ? '/' : '/ar/'}${slug === '404.html' ? '' : slug}`;
   for (const m2 of html.matchAll(/<a href="([^"]+)" aria-current="page"/g)) {
     if (m2[1] !== pagePath) fail(rel, `aria-current="page" on ${m2[1]} (page is ${pagePath})`);
   }
@@ -191,6 +193,7 @@ for (const file of htmlFiles) {
     const v = m[1];
     if (/^(https?:|mailto:|tel:|#|data:|\/\/)/.test(v)) continue;
     if (!v.startsWith('/')) { fail(rel, `relative URL should be root-relative: ${v}`); continue; }
+    if (BASE && v !== BASE && !v.startsWith(`${BASE}/`)) { fail(rel, `internal URL missing base path ${BASE}: ${v}`); continue; }
     if (!resolveLocal(v)) fail(rel, `broken internal link: ${v}`);
   }
   const srcsetRe = /\ssrcset="([^"]+)"/g;
