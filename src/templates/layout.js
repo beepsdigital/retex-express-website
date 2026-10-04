@@ -83,7 +83,7 @@ ${cfg.analytics.gtagId ? `<script async src="https://www.googletagmanager.com/gt
     <div class="site-header__actions">
       <a class="lang-switch" href="${altUrl}" hreflang="${alt}" lang="${alt}" title="${esc(t.langSwitchTitle)}">${esc(t.langSwitch)}</a>
       <a class="btn btn--whatsapp btn--sm" href="${wa}" rel="noopener">${icon('whatsapp')}<span>${esc(t.cta.whatsapp)}</span></a>
-      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="${esc(t.menu)}">${icon('menu', 'icon icon--menu')}${icon('close', 'icon icon--close')}</button>
+      <button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="${esc(t.menu)}"><span class="nav-toggle__inner">${icon('menu', 'icon icon--menu')}${icon('close', 'icon icon--close')}</span></button>
     </div>
   </div>
 </header>`;
@@ -136,9 +136,10 @@ ${cfg.analytics.gtagId ? `<script async src="https://www.googletagmanager.com/gt
   </div>
 </footer>
 <div class="mobile-bar" role="navigation" aria-label="${esc(t.quickContact)}">
-  <a href="${tel}">${icon('phone')}<span>${esc(t.cta.call)}</span></a>
-  <a class="mobile-bar__wa" href="${wa}" rel="noopener">${icon('whatsapp')}<span>${esc(t.cta.whatsapp)}</span></a>
-  <a href="${ctx.url('quote/')}">${icon('document')}<span>${esc(t.cta.quote)}</span></a>
+  <a href="${tel}">${icon('phone')}<span>${esc(t.bar.call)}</span></a>
+  <a class="mobile-bar__wa" href="${wa}" rel="noopener">${icon('whatsapp')}<span>${esc(t.bar.whatsapp)}</span></a>
+  <a href="${ctx.url('quote/')}">${icon('document')}<span>${esc(t.bar.quote)}</span></a>
+  <a href="${cfg.google.mapsUrl}" rel="noopener" target="_blank">${icon('pin')}<span>${esc(t.bar.map)}</span></a>
 </div>
 <script src="/assets/js/main.js?v=${buildId}" defer></script>
 </body>

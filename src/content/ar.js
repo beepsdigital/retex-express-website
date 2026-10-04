@@ -16,6 +16,7 @@ module.exports = {
     langSwitch: 'English',
     langSwitchTitle: 'English version',
     quickContact: 'تواصل سريع',
+    bar: { call: 'اتصال', whatsapp: 'واتساب', quote: 'عرض سعر', map: 'الخريطة' },
     am: 'ص',
     pm: 'م',
     days: { Saturday: 'السبت', Sunday: 'الأحد', Monday: 'الاثنين', Tuesday: 'الثلاثاء', Wednesday: 'الأربعاء', Thursday: 'الخميس', Friday: 'الجمعة' },

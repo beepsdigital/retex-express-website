@@ -81,11 +81,14 @@ html[lang="ar"] .eyebrow { letter-spacing: 0; text-transform: none; font-size: .
 .site-nav a:not(.btn) { display: block; padding: 10px 12px; color: var(--ink); text-decoration: none; font-weight: 700; font-size: .98rem; border-radius: var(--radius-xs); }
 .site-nav a:not(.btn):hover, .site-nav a[aria-current="page"] { color: var(--blue); background: var(--blue-soft); }
 .site-nav__quote { margin-inline-start: 8px; }
-.site-header__actions { display: flex; align-items: center; gap: 10px; }
-.lang-switch { font-weight: 700; text-decoration: none; padding: 8px 10px; border-radius: var(--radius-xs); color: var(--ink); border: 1px solid var(--line); font-size: .95rem; }
+/* All header controls share one 44px height so they sit on the same line on every device. */
+.site-header__actions { display: flex; align-items: center; gap: 8px; }
+.lang-switch { display: inline-flex; align-items: center; height: 44px; padding: 0 12px; font-weight: 700; text-decoration: none; border-radius: var(--radius-xs); color: var(--ink); border: 1px solid var(--line); font-size: .95rem; }
 .lang-switch:hover { border-color: var(--blue); color: var(--blue); }
-.nav-toggle { display: none; width: 46px; height: 46px; border: 1px solid var(--line); background: #fff; border-radius: var(--radius-xs); align-items: center; justify-content: center; cursor: pointer; }
-.nav-toggle .icon { width: 26px; height: 26px; }
+/* The button itself is a plain block; the inner span does the centering (iOS Safari ignores flex on <button>). */
+.nav-toggle { display: none; width: 44px; height: 44px; padding: 0; margin: 0; border: 1px solid var(--line); background: #fff; border-radius: var(--radius-xs); cursor: pointer; -webkit-appearance: none; appearance: none; line-height: 0; }
+.nav-toggle__inner { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; }
+.nav-toggle .icon { width: 24px; height: 24px; display: block; margin: 0; }
 .nav-toggle .icon--close { display: none; }
 body.nav-open .nav-toggle .icon--close { display: block; }
 body.nav-open .nav-toggle .icon--menu { display: none; }
@@ -291,15 +294,15 @@ html[lang="ar"] .footer__title { letter-spacing: 0; text-transform: none; }
   .site-nav__quote .btn { width: 100%; min-height: 48px; font-size: 1rem; }
   .site-header__actions .btn--whatsapp span { display: none; }
   .site-header__actions .btn--whatsapp { width: 44px; height: 44px; padding: 0; min-height: 0; }
-  .nav-toggle { display: inline-flex; }
+  .nav-toggle { display: block; }
   .hero__grid, .page-intro__grid, .contact-grid, .quote-grid, .about__flyer { grid-template-columns: 1fr; }
   .hero__media { order: -1; }
   .hero__badge { display: none; }
   .trust__grid { grid-template-columns: 1fr 1fr; }
   .quote-form { grid-template-columns: 1fr; padding: 20px; }
   .contact-list > div { grid-template-columns: 1fr; }
-  .mobile-bar { position: fixed; bottom: 0; inset-inline: 0; display: grid; grid-template-columns: 1fr 1.3fr 1fr; background: #fff; border-top: 1px solid var(--line); z-index: 45; padding-bottom: env(safe-area-inset-bottom); box-shadow: 0 -6px 20px rgba(16, 24, 40, .08); }
-  .mobile-bar a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px 6px; font-size: .78rem; font-weight: 700; color: var(--ink); text-decoration: none; }
+  .mobile-bar { position: fixed; bottom: 0; inset-inline: 0; display: grid; grid-template-columns: 1fr 1.2fr 1fr 1fr; background: #fff; border-top: 1px solid var(--line); z-index: 45; padding-bottom: env(safe-area-inset-bottom); box-shadow: 0 -6px 20px rgba(16, 24, 40, .08); }
+  .mobile-bar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; padding: 6px 2px; font-size: .76rem; font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; }
   .mobile-bar .icon { width: 22px; height: 22px; color: var(--blue); }
   .mobile-bar__wa { background: var(--wa); color: #fff !important; }
   .mobile-bar__wa .icon { color: #fff; }

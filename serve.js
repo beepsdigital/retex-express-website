@@ -6,6 +6,8 @@ const path = require('path');
 
 const root = path.join(__dirname, 'dist');
 const port = Number(process.argv[2]) || 8080;
+// Mirror production: when siteUrl has a path (GitHub Pages project site), serve dist/ under that prefix.
+const BASE = new URL(require('./site.config.js').siteUrl).pathname.replace(/\/+$/, '');
 const mime = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.xml': 'application/xml; charset=utf-8',
@@ -20,15 +22,21 @@ function send(res, status, file) {
 }
 
 http.createServer((req, res) => {
-  let urlPath = decodeURIComponent(req.url.split('?')[0]);
+  let urlPath;
+  try { urlPath = decodeURIComponent(req.url.split('?')[0]); } catch (e) { res.writeHead(400); return res.end('Bad request'); }
+  if (BASE) {
+    if (urlPath === BASE) { res.writeHead(301, { Location: BASE + '/' }); return res.end(); }
+    if (!urlPath.startsWith(BASE + '/')) { res.writeHead(302, { Location: BASE + '/' }); return res.end(); }
+    urlPath = urlPath.slice(BASE.length);
+  }
   if (urlPath.endsWith('/')) urlPath += 'index.html';
   const file = path.normalize(path.join(root, urlPath));
   if (!file.startsWith(root)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.stat(file, (err, st) => {
     if (!err && st.isFile()) return send(res, 200, file);
-    if (!err && st.isDirectory()) { res.writeHead(301, { Location: urlPath + '/' }); return res.end(); }
+    if (!err && st.isDirectory()) { res.writeHead(301, { Location: BASE + urlPath + '/' }); return res.end(); }
     const nf = urlPath.startsWith('/ar/') ? path.join(root, 'ar', '404.html') : path.join(root, '404.html');
     if (fs.existsSync(nf)) return send(res, 404, nf);
     res.writeHead(404); res.end('Not found');
   });
-}).listen(port, () => console.log(`Serving dist/ at http://localhost:${port}/`));
+}).listen(port, () => console.log(`Serving dist/ at http://localhost:${port}${BASE}/`));

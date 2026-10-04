@@ -18,6 +18,7 @@ module.exports = {
     langSwitch: 'العربية',
     langSwitchTitle: 'النسخة العربية',
     quickContact: 'Quick contact',
+    bar: { call: 'Call', whatsapp: 'WhatsApp', quote: 'Quote', map: 'Map' },
     am: 'AM',
     pm: 'PM',
     days: { Saturday: 'Saturday', Sunday: 'Sunday', Monday: 'Monday', Tuesday: 'Tuesday', Wednesday: 'Wednesday', Thursday: 'Thursday', Friday: 'Friday' },
