@@ -45,13 +45,15 @@ Links inside copy use `@@/path/` (for example `<a href="@@/services/air-cargo/">
 
 ## Demo hosting (GitHub Pages)
 
-Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site, runs the tests and publishes `dist/` to GitHub Pages. The build writes a `CNAME` file from `siteUrl`, so the Pages custom domain follows the config.
+Repository: https://github.com/beepsdigital/retex-express-website (public, because GitHub Pages on a private repository needs a paid plan).
+
+Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site, runs the tests and publishes `dist/` to GitHub Pages. The build writes a `CNAME` file from `siteUrl`, and the custom domain is also configured in the repository's Pages settings.
 
 Current demo domain: **logistics-demo.beepsdigital.com**. For it to resolve, add this DNS record at the provider that hosts beepsdigital.com:
 
 | Type | Name | Value |
 |---|---|---|
-| CNAME | `logistics-demo` | `<github-username>.github.io` |
+| CNAME | `logistics-demo` | `beepsdigital.github.io` |
 
 Then in the repository go to Settings → Pages, confirm the custom domain shows as verified, and tick "Enforce HTTPS" once the certificate has been issued (usually within an hour of the DNS change). If beepsdigital.com is on Cloudflare, keep the record DNS-only (grey cloud) until HTTPS is enforced.
 
