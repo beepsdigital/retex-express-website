@@ -1,0 +1,11 @@
+# Build output (GitHub Actions rebuilds it on every push)
+dist/
+
+# Local tooling
+node_modules/
+.superpowers/
+
+# OS noise
+.DS_Store
+Thumbs.db
+*.log
