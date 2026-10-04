@@ -292,6 +292,8 @@ html[lang="ar"] .footer__title { letter-spacing: 0; text-transform: none; }
   .site-nav a:not(.btn) { padding: 14px 12px; font-size: 1.1rem; }
   .site-nav__quote { margin: 12px 0 0; }
   .site-nav__quote .btn { width: 100%; min-height: 48px; font-size: 1rem; }
+  /* The nav is a fixed drawer here, so it no longer pushes the controls to the edge; do it explicitly. */
+  .site-header__actions { margin-inline-start: auto; }
   .site-header__actions .btn--whatsapp span { display: none; }
   .site-header__actions .btn--whatsapp { width: 44px; height: 44px; padding: 0; min-height: 0; }
   .nav-toggle { display: block; }
